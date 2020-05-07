@@ -22,6 +22,10 @@
 Open and start **ping-pong-game.html**
 ```
 
+## Screenshot
+
+![Ping-Pong-Game](screenshot/paulorcvieira-ping-pong-game.jpg)
+
 ---
 
 ## Author
