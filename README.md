@@ -37,4 +37,4 @@ Open and start **ping-pong-game.html**
 ## 📝 License
 
 Copyright © 2020 [Paulo Vieira](https://github.com/paulorcvieira).<br />
-This project is [ISC](https://github.com/paulorcvieira/ping-pong-game/blob/master/LICENSE.md) licensed.
+This project is [MIT](https://github.com/paulorcvieira/ping-pong-game/blob/master/LICENSE.md) licensed.
