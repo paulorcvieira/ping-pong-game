@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ping Pong - Game</title>
+</head>
+
+<body>
+  <canvas id="folha" width="600px" height="500px"></canvas>
+  <script>
+
+    window.onload = function () {
+      utils();
+      setInterval(startNewGame, 1000 / 30);
+    }
+
+    function startNewGame() {
+      drawGame();
+      calculations();
+    }
+
+    function restartBall(){
+      // Reload ball on center
+      positionBallX = widthField / 2;
+      positionBallY = heightField / 2;
+      speedBallPositionX = -speedBallPositionX;
+      speedBallPositionY = 3;
+    }
+
+    function utils() {
+      // Canvas
+      cornerDraw = document.getElementById("folha");
+      areaDraw = cornerDraw.getContext("2d");
+
+      // Variables
+      widthField = 600;
+      heightField = 500;
+      thicknessLine = 5;
+      diameterBall = 10;
+      racketThickness = 11;
+      heightThickness = 100;
+      racketEffect = 0.3;
+      speedCPU = 5;
+      positionPlayer1 = positionPlayer2 = 40;
+      positionBallX = positionBallY = 10;
+      speedBallPositionX = speedBallPositionY = 20;
+      pointsPlayer1 = pointsCPU = 0;
+
+      // Mouse Move
+      cornerDraw.addEventListener('mousemove', function (event) {
+        positionPlayer1 = event.clientY - heightThickness / 2;
+      });
+
+    }
+
+    function drawGame() {
+      // Background
+      areaDraw.fillStyle = '#745BBB';
+      // Wight X Height
+      areaDraw.fillRect(0, 0, widthField, heightField);
+      // Center Line
+      areaDraw.fillStyle = '#FFFFFF';
+      areaDraw.fillRect(widthField / 2 - thicknessLine / 2, 0, thicknessLine, heightField);
+      // Ball
+      areaDraw.fillStyle = '#FFFF00';
+      areaDraw.fillRect(positionBallX - diameterBall / 2, positionBallY - diameterBall / 2, diameterBall, diameterBall);
+      // Rackets
+      areaDraw.fillStyle = '#FF0000';
+      areaDraw.fillRect(0, positionPlayer1, racketThickness, heightThickness);
+      areaDraw.fillRect(widthField - racketThickness, positionPlayer2, racketThickness, heightThickness);
+      // Write Points
+      areaDraw.fillStyle = '#FFFFFF';
+      areaDraw.fillText("Jogador: " + pointsPlayer1 + " pontos", 100, 50);
+      areaDraw.fillText("CPU: " + pointsCPU + " pontos", widthField - 200, 50);
+    }
+
+    function calculations() {
+      positionBallX = positionBallX + speedBallPositionX;
+      positionBallY = positionBallY + speedBallPositionY;
+
+      if (positionBallY < 0 && speedBallPositionY < 0) {
+        speedBallPositionY = -speedBallPositionY;
+      }
+
+      // Ball difficulty
+      if (positionBallY > heightField && speedBallPositionY > 0) {
+        speedBallPositionY = -speedBallPositionY;
+      }
+
+      // Check Points Player 1
+      if (positionBallX > widthField) {
+        if (positionBallY > positionPlayer2 && positionBallY < positionPlayer2 + heightThickness) {
+          // Corners
+          speedBallPositionX = -speedBallPositionX;
+
+          var diferencaY = positionBallY - (positionPlayer2 + heightThickness / 2);
+          speedBallPositionY = diferencaY * racketEffect;
+
+        } else {
+          // Points Player 1
+          pointsPlayer1++;
+          restartBall();
+        }
+      }
+
+      // Check Points Player 2
+      if (positionBallX < 0) {
+        if (positionBallY > positionPlayer1 && positionBallY < positionPlayer1 + heightThickness) {
+          // Corners
+          speedBallPositionX = -speedBallPositionX;
+
+          var diferencaY = positionBallY - (positionPlayer1 + heightThickness / 2);
+          speedBallPositionY = diferencaY * racketEffect;
+        } else {
+          // Points Player 2
+          pointsCPU++;
+          restartBall();
+        }
+      }
+
+      if (positionPlayer2 + heightThickness / 2 < positionBallY) {
+        positionPlayer2 = positionPlayer2 + speedCPU;
+      } else {
+        positionPlayer2 = positionPlayer2 - speedCPU;
+      }
+
+    }
+  </script>
+</body>
+
+</html>
